@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xwj.bms.dao.BookDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+    <select id="queryById" resultType="Book" parameterType="long">
+        SELECT
+            *
+        FROM
+            book
+        WHERE
+            book_id 
+         LIKE
+		 CONCAT(CONCAT('%', #{bookId}), '%');
+    </select>
+    <select id="queryByName" resultType="Book" >
+        SELECT
+            *
+        FROM
+            book
+        WHERE
+           book_name
+         LIKE
+		 CONCAT(CONCAT('%', #{bookName}), '%');
+    </select>
+	<select id="queryByType" resultType="Book">
+        SELECT
+            *
+        FROM
+            book
+        WHERE
+            type = #{type}
+    </select>
+    
+	<select id="queryByPress" resultType="Book">
+        SELECT
+            *
+        FROM
+            book
+        WHERE
+            press 
+         LIKE
+		 CONCAT(CONCAT('%', #{press}), '%');
+    </select>
+    
+    <select id="queryByAuthor" resultType="Book">
+        SELECT
+            *
+        FROM
+            book
+        WHERE
+            author 
+         LIKE
+		 CONCAT(CONCAT('%', #{author}), '%');
+    </select>
+    <update id="reduceNumber">
+        UPDATE book
+        	SET number = number - 1
+        WHERE
+            book_id = #{bookId}
+        AND number > 0
+    </update>
+    
+	<update id="addNumber">
+        UPDATE book
+        	SET number = number + #{number}
+        WHERE
+            book_id = #{bookId}     
+    </update>
+    
+    <update id="updateBook">
+        UPDATE book
+        	SET book_id = #{bookId},
+        	 book_name = #{bookName},
+        	 type = #{type},
+        	 press = #{press},
+        	 number=#{number},
+        	 author=#{author}
+        WHERE
+            book_id = #{bookId}     
+    </update>
+    
+    <insert id="addBook">
+    	INSERT INTO book(book_name,number,type,press,author)  
+    	VALUE (#{bookName},#{number},#{type},#{press},#{author})
+    </insert>
+    
+	<select id="queryBook" resultType="Book">
+		SELECT
+			*
+		FROM
+			book
+		WHERE
+			book_name=#{bookName}
+		AND
+			type=#{type}
+		AND
+			press=#{press}
+		AND
+			author=#{author}			
+	</select>
+	<select id="queryAllBook" resultType="Book">
+		SELECT
+			*
+		FROM
+			book	
+	</select>
+</mapper>
