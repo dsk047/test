@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xwj.bms.dao.AppointmentDao">
+	<insert id="insertAppointment">
+		<!-- ignore 主键冲突，报错 -->
+		INSERT ignore INTO appointment (book_id, user_name,book_state)
+		VALUES (#{bookId}, #{userName},#{bookState})
+
+	</insert>
+
+	<select id="queryByBookIdAndName" resultType="Appointment">
+		<!-- 如何告诉MyBatis把结果映射到Appointment同时映射book属性 -->
+		<!-- 可以自由控制SQL -->
+		SELECT
+		*
+		FROM
+		appointment
+		WHERE
+		book_id=#{bookId}
+		AND
+		user_name=#{userName}
+	</select>
+
+	<select id="queryByUserName" resultType="Appointment">
+
+		SELECT
+		*
+		FROM
+		appointment
+		WHERE
+		user_name=#{userName}
+	</select>
+
+	<select id="queryByUserNameWithBook" resultType="Book">
+		<!-- 如何告诉MyBatis把结果映射到Appointment同时映射book属性 -->
+		<!-- 可以自由控制SQL -->
+		SELECT
+		a.*,
+		b.*
+		FROM
+		appointment a
+		INNER JOIN book b ON a.book_id = b.book_id
+		WHERE
+		a.user_name = #{userName}
+	</select>
+
+	<delete id="reduceAppoint">
+		DELETE
+		FROM
+		appointment
+		WHERE
+		book_id=#{bookId}
+		AND
+		user_name=#{userName}
+	</delete>
+</mapper>
